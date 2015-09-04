@@ -37,7 +37,7 @@ module.exports = function publish(o) {
       cd(baseDirectory);
       publishSingle(optionsSingle);
     } catch (err) {
-      console.err('ERROR processing repo: ' + repo + ' | ERROR MESSAGE: ' + err.message)
+      console.error('ERROR processing repo: ' + repo + ' | ERROR MESSAGE: ' + err.message)
     }
   });
 

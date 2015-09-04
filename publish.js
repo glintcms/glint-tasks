@@ -1,6 +1,7 @@
 require('shelljs/global');
-var defaults = require('defaults');
+var clone = require('clone');
 var sprintf = require('sprintf-js').sprintf;
+var chalk = require('chalk');
 
 /**
  *
@@ -17,19 +18,39 @@ var sprintf = require('sprintf-js').sprintf;
 
  npm publish
  *
- * @param options:  { pwd, user, password, repo, org, tag }
+ * @param options:  { user, password, repo, org, tag, _: [directories array] }
  */
 module.exports = function publish(o) {
-  var options = defaults(options, o);
+  var options = clone(o);
+  options.repos = options.repos || options._;
+
+  if (options.pwd) {
+    cd(options.pwd);
+  }
+  var baseDirectory = pwd();
+  console.log('base directory:', baseDirectory);
+
+  options.repos.forEach(function(repo) {
+    var optionsSingle = clone(options);
+    optionsSingle.repo = repo;
+    try {
+      cd(baseDirectory);
+      publishSingle(optionsSingle);
+    } catch (err) {
+      console.err('ERROR processing repo: ' + repo + ' | ERROR MESSAGE: ' + err.message)
+    }
+  });
+
+};
+
+function publishSingle(options) {
 
   var cmds = [];
   var cmd = '';
 
-  pwd();
-  if (options.pwd) {
-    cd(options.pwd);
-  }
-  pwd();
+  cd(options.repo);
+  var workingDirectory = pwd();
+  console.log(chalk.inverse('working directory:'), workingDirectory);
 
   if (options.org) {
     cmd = sprintf('curl -u %(user)s:%(password)s https://api.github.com/orgs/%(org)s/repos -d \'{"name":"%(repo)s"}\'', options);
@@ -53,18 +74,17 @@ module.exports = function publish(o) {
 
   var result;
   cmds.forEach(function(cmd) {
+    console.log(chalk.inverse('executing... ' + cmd));
     result = exec(cmd);
     if (!result || result.code !== 0) {
-      echo('ERROR', cmd);
-      exit(1);
+      throw new Error('ERROR CMD FAILED: ' + cmd);
     }
   });
 
-};
-
+}
 
 if (require.main === module) {
-  // node publish.js --pwd ../glint-util  --password donotshareyourpassword --user andineck --repo glint-util --org glintcms --tag 1.0.0
+  // node publish.js --pwd ../ --password donotshareyourpassword --user andineck --org glintcms --tag 1.0.0 glint-util glint-tasks
   var args = require('minimist')(process.argv.slice(2));
   module.exports(args);
 }

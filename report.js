@@ -15,7 +15,11 @@ module.exports = function glintModules(modules) {
 
   log('found modules:', modules);
 
-  log('module names:', moduleNames(modules));
+  var moduleNamesArray = moduleNames(modules);
+
+  log('module names array:', moduleNamesArray);
+
+  log('module names:', moduleNamesArray.join(' '));
 
   log('modules with missing package.json', missingPackage(modules));
 

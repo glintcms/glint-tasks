@@ -1,0 +1,29 @@
+# {{= it.name }}
+
+
+{{= it.description }}
+
+
+# install
+
+```bash
+npm install {{= it.name }}
+```
+
+# use
+
+> This Module is part of [glintcms](http://glintcms.com/).
+> Please see the [documentation](https://github.com/glintcms/glintcms) for more info.
+
+
+# test
+
+```bash
+npm test
+```
+
+# license
+
+{{= it.license }}
+
+> sponsored by [intesso](http://intesso.com)

@@ -1,4 +1,5 @@
 require('shelljs/global');
+var defaults = require('defaults');
 var sprintf = require('sprintf-js').sprintf;
 
 /**
@@ -16,9 +17,10 @@ var sprintf = require('sprintf-js').sprintf;
 
  npm publish
  *
- * @param options:  pwd, user, password, repo, org, tag
+ * @param options:  { pwd, user, password, repo, org, tag }
  */
-module.exports = function publish(options) {
+module.exports = function publish(o) {
+  var options = defaults(options, o);
 
   var cmds = [];
   var cmd = '';
@@ -32,15 +34,15 @@ module.exports = function publish(options) {
   if (options.org) {
     cmd = sprintf('curl -u %(user)s:%(password)s https://api.github.com/orgs/%(org)s/repos -d \'{"name":"%(repo)s"}\'', options);
   } else {
+    options.org = options.user;
     cmd = sprintf('curl -u %(user)s:%(password)s https://api.github.com/user/repos -d \'{"name":"%(repo)s"}\'', options);
   }
-  options.org = options.user;
 
   cmds.push(cmd);
   cmds.push('git init');
   cmds.push('git add -A');
   cmds.push('git commit -m initial');
-  cmds.push(sprintf('git remote add origin https://github.com/%(org)s/%(repo)s', options));
+  cmds.push(sprintf('git remote add origin https://github.com/%(org)s/%(repo)s.git', options));
   cmds.push('git push -u origin master');
 
   if (options.tag) {
@@ -62,7 +64,7 @@ module.exports = function publish(options) {
 
 
 if (require.main === module) {
-  // node publish.js --pwd
+  // node publish.js --pwd ../glint-util  --password donotshareyourpassword --user andineck --repo glint-util --org glintcms --tag 1.0.0
   var args = require('minimist')(process.argv.slice(2));
   module.exports(args);
 }

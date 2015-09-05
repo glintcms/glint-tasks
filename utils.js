@@ -15,7 +15,7 @@ exports.log = function log(title) {
       }
     }
     console.log(chalk.gray(line));
-  })
+  });
 
   console.log('');
 };

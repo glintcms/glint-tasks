@@ -5,8 +5,8 @@
   "main": "report.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node report.js",
-    "fix": "node fix.js"
+    "link-glint": "export NODE_ENV=development && assets-bundler --src '../glint-*' --dest 'node_modules/glint-*'",
+    "start": "node report.js"
   },
   "keywords": [
     "glint",
@@ -19,18 +19,20 @@
   "license": "MIT",
   "dependencies": {
     "chalk": "^1.1.1",
+    "check-dependencies": "^0.9.5",
     "clone": "^1.0.2",
     "debug": "^2.2.0",
     "dedupe": "^1.0.1",
     "defaults": "^1.0.2",
+    "depcheck": "^0.4.7",
+    "depmissing": "andineck/depmissing",
     "dot": "^1.0.3",
     "glob": "^5.0.14",
-    "glob-resolve": "^1.0.5",
     "lodash.includes": "^3.1.3",
     "minimist": "^1.2.0",
+    "run-series": "^1.1.2",
     "shelljs": "^0.5.3",
     "sliced": "^1.0.1",
-    "spawns": "^1.0.0",
     "sprintf-js": "^1.0.3",
     "subarg": "^1.0.0"
   },

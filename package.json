@@ -1,6 +1,6 @@
 {
   "name": "glint-tasks",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "collection of tasks to automate handling the glint modules",
   "main": "report.js",
   "scripts": {

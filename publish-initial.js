@@ -3,21 +3,28 @@ var clone = require('clone');
 var sprintf = require('sprintf-js').sprintf;
 var chalk = require('chalk');
 
+/*
+# steps:
+cd PWD
+curl -u USER:PASSWORD https://api.github.com/orgs/ORG/repos -d '{"name":"REPO"}'
+git init
+git add -A
+git commit -m initial
+git remote add origin https://github.com/ORG/REPO.git
+git push -u origin master
+
+git tag TAG
+git push --tags
+
+npm publish
+ */
+
+/*
+example:
+node publish.js --pwd ../ --password donotshareyourpassword --user andineck --org glintcms --tag 1.0.0 glint-util glint-tasks
+ */
+
 /**
- *
- cd PWD
- curl -u USER:PASSWORD https://api.github.com/orgs/ORG/repos -d '{"name":"REPO"}'
- git init
- git add -A
- git commit -m initial
- git remote add origin https://github.com/ORG/REPO.git
- git push -u origin master
-
- git tag TAG
- git push --tags
-
- npm publish
- *
  * @param options:  { user, password, repo, org, tag, _: [directories array] }
  */
 module.exports = function publish(o) {
@@ -84,7 +91,6 @@ function publishSingle(options) {
 }
 
 if (require.main === module) {
-  // node publish.js --pwd ../ --password donotshareyourpassword --user andineck --org glintcms --tag 1.0.0 glint-util glint-tasks
   var args = require('minimist')(process.argv.slice(2));
   module.exports(args);
 }

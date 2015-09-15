@@ -1,14 +1,15 @@
+/*
+ examples:
+ node publish-update.js --pwd ../ --message 'updated dependencies' glint-adapter glint-adapter-ajax glint-adapter-elasticsearch glint-adapter-fs glint-block glint-block-ckeditor glint-block-image glint-block-image-attribute glint-block-markdown glint-block-meta glint-block-text glint-container glint-i18n glint-plugin-adapter-dates glint-plugin-adapter-expires glint-plugin-adapter-id glint-plugin-adapter-locale glint-plugin-block-style-editable glint-plugin-wrap-container-place glint-plugin-wrap-i18n glint-plugin-wrap-locale glint-session glint-socket-io glint-static glint-tasks glint-trigger glint-trigger-keyboard glint-trigger-sidenav glint-util glint-widget glint-wrap
+ node publish-update.js --version patch --message 'adds adapter provider mixin' /Users/andineck/Development/github/glint-adapter /Users/andineck/Development/github/glint-adapter-ajax
+
+ */
+
 require('shelljs/global');
 var clone = require('clone');
 var sprintf = require('sprintf-js').sprintf;
 var chalk = require('chalk');
 
-
-/*
-example:
-node publish-update.js --pwd ../ --message 'updated dependencies' glint-adapter glint-adapter-ajax glint-adapter-elasticsearch glint-adapter-fs glint-block glint-block-ckeditor glint-block-image glint-block-image-attribute glint-block-markdown glint-block-meta glint-block-text glint-container glint-i18n glint-plugin-adapter-dates glint-plugin-adapter-expires glint-plugin-adapter-id glint-plugin-adapter-locale glint-plugin-block-style-editable glint-plugin-wrap-container-place glint-plugin-wrap-i18n glint-plugin-wrap-locale glint-session glint-socket-io glint-static glint-tasks glint-trigger glint-trigger-keyboard glint-trigger-sidenav glint-util glint-widget glint-wrap
-
- */
 
 module.exports = function publish(o) {
   var options = clone(o);
@@ -89,7 +90,6 @@ function publishSingle(options) {
 }
 
 if (require.main === module) {
-  // node publish.js --pwd ../ --password donotshareyourpassword --user andineck --org glintcms --tag 1.0.0 glint-util glint-tasks
-  var args = require('minimist')(process.argv.slice(2));
+  var args = require('subarg')(process.argv.slice(2));
   module.exports(args);
 }

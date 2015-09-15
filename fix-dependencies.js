@@ -11,7 +11,6 @@ var series = require('run-series');
 var requireomat = require('requireomat');
 
 var c = require('./config');
-var Modules = require('./modules');
 
 /**
  *
@@ -25,8 +24,8 @@ module.exports = function fix(o, callback) {
   var options = clone(o);
   options = defaults(options, c);
 
-  if (options._.length > 0 && !options.modules) options.modules = options._;
-  var modules = options.modules || Modules();
+  o.modules = o.modules || o._;
+  var modules = options.modules;
   delete options.modules;
 
   console.log(chalk.bold.inverse.blue('glint fix-dependencies:'));

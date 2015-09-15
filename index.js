@@ -1,11 +1,9 @@
 var fs = require('fs');
 var path = require('path');
 var chalk = require('chalk');
-var log = require('./utils').log;
-var Modules = require('./modules');
-var Readmes = require('./readmes');
-
-var argv = process.argv.slice(2);
+var log = require('./lib//utils').log;
+var Modules = require('./lib/modules');
+var Readmes = require('./lib/readmes');
 
 module.exports = function glintModules(modules) {
   modules = modules || Modules();
@@ -13,13 +11,18 @@ module.exports = function glintModules(modules) {
   console.log(chalk.bold.inverse.blue('glint report:'));
   console.log();
 
-  log('found modules:', modules);
-
   var moduleNamesArray = moduleNames(modules);
+
+  log('modules (copy&paste)', modules.join(' '));
+
+  log('modules array', modules);
+
+
+  log('module names (copy&paste):', moduleNamesArray.join(' '));
 
   log('module names array:', moduleNamesArray);
 
-  log('module names:', moduleNamesArray.join(' '));
+
 
   log('modules with missing package.json', missingPackage(modules));
 

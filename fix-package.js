@@ -7,35 +7,29 @@ var clone = require('clone');
 var includes = require('lodash.includes');
 var dedupe = require('dedupe');
 
-var log = require('./utils').log;
-var Modules = require('./modules');
+var log = require('./lib/utils').log;
 var c = require('./config');
 
-var argv = process.argv.slice(2);
-
-module.exports = function fix(modules, o, write) {
+module.exports = function fix(o) {
   o = defaults(o, c);
-
-  modules = modules || Modules();
+  o.modules = o.modules || o._;
 
   console.log(chalk.bold.inverse.blue('glint fix-package:'));
   console.log();
 
-  log('found modules:', modules);
-
-  fixPackages(modules, o, write);
+  fixPackages(o);
 
 };
 
-function fixPackages(modules, o, write) {
+function fixPackages(o) {
 
   var packageErrors = [];
 
-  modules.forEach(function(module) {
+  o.modules.forEach(function(module) {
     try {
       var package = require(module + '/package.json');
       var moduleName = extractModuleName(module);
-      fixPackage(module, moduleName, package, o, write);
+      fixPackage(o, module, moduleName, package, o);
     } catch (err) {
       log('ERRORNOPACKAGEJSON', module);
       packageErrors.push(module);
@@ -45,7 +39,7 @@ function fixPackages(modules, o, write) {
   return packageErrors;
 }
 
-function fixPackage(modulePath, name, package, o, write) {
+function fixPackage(o, modulePath, name, package) {
   log('START ' + name);
 
   var replace = vars(o.repo, name);
@@ -107,7 +101,7 @@ function fixPackage(modulePath, name, package, o, write) {
   });
   dedupe(package.keywords);
 
-  if (write) {
+  if (o.write) {
     log('END ' + name + ' WRITTEN package.json');
     fs.writeFileSync(modulePath + '/package.json', JSON.stringify(package, null, 2));
   } else {
@@ -146,6 +140,6 @@ function nameSegments(name) {
 }
 
 if (require.main === module) {
-  var write = includes(argv, 'write');
-  module.exports(null, null, write);
+  var args = require('subarg')(process.argv.slice(2));
+  module.exports(args);
 }

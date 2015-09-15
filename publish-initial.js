@@ -1,3 +1,8 @@
+/*
+ example:
+ node publish.js --pwd ../ --password donotshareyourpassword --user andineck --org glintcms --tag 1.0.0 glint-util glint-tasks
+ */
+
 require('shelljs/global');
 var clone = require('clone');
 var sprintf = require('sprintf-js').sprintf;
@@ -17,11 +22,6 @@ git tag TAG
 git push --tags
 
 npm publish
- */
-
-/*
-example:
-node publish.js --pwd ../ --password donotshareyourpassword --user andineck --org glintcms --tag 1.0.0 glint-util glint-tasks
  */
 
 /**
@@ -91,6 +91,6 @@ function publishSingle(options) {
 }
 
 if (require.main === module) {
-  var args = require('minimist')(process.argv.slice(2));
+  var args = require('subarg')(process.argv.slice(2));
   module.exports(args);
 }

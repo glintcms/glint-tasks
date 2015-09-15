@@ -7,33 +7,22 @@ var clone = require('clone');
 var includes = require('lodash.includes');
 var dedupe = require('dedupe');
 
-var log = require('./utils').log;
-var Modules = require('./modules');
-var c = require('./config');
+var log = require('./lib/utils').log;
 
-var argv = process.argv.slice(2);
+var c = require('./config');
 
 var gitignoreTemplate = fs.readFileSync(__dirname + '/templates/.gitignore', 'utf-8');
 
-module.exports = function fix(modules, o, write) {
+module.exports = function fix(o) {
   o = defaults(o, c);
-
-  modules = modules || Modules();
+  o.modules = o.modules || o._;
 
   console.log(chalk.bold.inverse.blue('glint fix-gitignore:'));
   console.log();
 
-  log('found modules:', modules);
-
-  fixGitignores(modules, o, write);
-
-};
-
-function fixGitignores(modules, o, write) {
-
   var packageErrors = [];
 
-  modules.forEach(function(module) {
+  o.modules.forEach(function(module) {
     var p = module + '/.gitignore';
     try {
       var gitignore = fs.readFileSync(p, 'uft-8');
@@ -48,6 +37,6 @@ function fixGitignores(modules, o, write) {
 }
 
 if (require.main === module) {
-  var write = includes(argv, 'write');
-  module.exports(null, null, write);
+  var args = require('subarg')(process.argv.slice(2));
+  module.exports(args);
 }

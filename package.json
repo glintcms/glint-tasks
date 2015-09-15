@@ -2,11 +2,11 @@
   "name": "glint-tasks",
   "version": "1.0.2",
   "description": "collection of tasks to automate handling the glint modules",
-  "main": "report.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "link-glint": "export NODE_ENV=development && assets-bundler --src '../glint-*' --dest 'node_modules/glint-*'",
-    "start": "node report.js"
+    "start": "node index.js"
   },
   "keywords": [
     "glint",
@@ -18,6 +18,7 @@
   "author": "Andi Neck",
   "license": "MIT",
   "dependencies": {
+    "async": "^1.4.2",
     "chalk": "^1.1.1",
     "clone": "^1.0.2",
     "debug": "^2.2.0",
